@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Формулы | Math & Physics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f 0%, #2a2a3e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.05);
+            padding: 5px;
+            border-radius: 50px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .category-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .category-title {
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .category-count {
+            font-size: 0.7em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .formula-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        .formula-card:hover {
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .formula-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #a8b2ff;
+        }
+
+        .formula {
+            font-size: 1.2em;
+            font-family: 'Courier New', monospace;
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 12px;
+            margin: 10px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .formula-description {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .term-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-right: 3px solid #764ba2;
+        }
+
+        .term-name {
+            font-size: 1em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .term-definition {
+            font-size: 0.85em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .back-button {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            margin: 20px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(102,126,234,0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 Формулы & Физика</h1>
+            <p>Математика | Физика | Термины</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="math">📐 Математика</button>
+            <button class="tab" data-tab="physics">⚡ Физика</button>
+            <button class="tab" data-tab="terms">📖 Термины</button>
+        </div>
+
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Поиск формул и терминов..." onkeyup="searchItems()">
+        </div>
+
+        <!-- View: Категории математики -->
+        <div id="mathCategoriesView" class="view active">
+            <div class="category-grid" id="mathCategoryGrid"></div>
+        </div>
+
+        <!-- View: Категории физики -->
+        <div id="physicsCategoriesView" class="view">
+            <div class="category-grid" id="physicsCategoryGrid"></div>
+        </div>
+
+        <!-- View: Формулы математики -->
+        <div id="mathFormulasView" class="view"></div>
+
+        <!-- View: Формулы физики -->
+        <div id="physicsFormulasView" class="view"></div>
+
+        <!-- View: Термины -->
+        <div id="termsView" class="view"></div>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+        
+        tg.MainButton.setText('Закрыть');
+        tg.MainButton.onClick(() => tg.close());
+        tg.MainButton.show();
+
+        // ============ ДАННЫЕ ============
+        
+        const mathData = {
+            "Алгебра": {
+                icon: "🔢",
+                formulas: [
+                    { name: "Квадратное уравнение", formula: "ax² + bx + c = 0", description: "Дискриминант: D = b² - 4ac, x = (-b ± √D)/(2a)" },
+                    { name: "Формула сокращенного умножения", formula: "(a ± b)² = a² ± 2ab + b²", description: "Квадрат суммы/разности" },
+                    { name: "Разность квадратов", formula: "a² - b² = (a - b)(a + b)", description: "Произведение разности и суммы" },
+                    { name: "Куб суммы", formula: "(a + b)³ = a³ + 3a²b + 3ab² + b³", description: "Формула куба суммы" },
+                    { name: "Куб разности", formula: "(a - b)³ = a³ - 3a²b + 3ab² - b³", description: "Формула куба разности" },
+                    { name: "Сумма кубов", formula: "a³ + b³ = (a + b)(a² - ab + b²)", description: "Разложение суммы кубов" },
+                    { name: "Разность кубов", formula: "a³ - b³ = (a - b)(a² + ab + b²)", description: "Разложение разности кубов" }
+                ]
+            },
+            "Тригонометрия": {
+                icon: "📐",
+                formulas: [
+                    { name: "Основное тождество", formula: "sin²α + cos²α = 1", description: "Основное тригонометрическое тождество" },
+                    { name: "Тангенс", formula: "tg α = sinα / cosα", description: "Отношение синуса к косинусу" },
+                    { name: "Котангенс", formula: "ctg α = cosα / sinα", description: "Отношение косинуса к синусу" },
+                    { name: "Синус двойного угла", formula: "sin 2α = 2 sinα cosα", description: "Формула двойного угла" },
+                    { name: "Косинус двойного угла", formula: "cos 2α = cos²α - sin²α", description: "Формула двойного угла" },
+                    { name: "Тангенс двойного угла", formula: "tg 2α = 2tgα / (1 - tg²α)", description: "Формула двойного угла" },
+                    { name: "Сумма синусов", formula: "sinα + sinβ = 2 sin((α+β)/2) cos((α-β)/2)", description: "Сумма синусов" }
+                ]
+            },
+            "Производные": {
+                icon: "📈",
+                formulas: [
+                    { name: "Производная константы", formula: "c' = 0", description: "Производная постоянной равна нулю" },
+                    { name: "Степень", formula: "(xⁿ)' = n·xⁿ⁻¹", description: "Производная степенной функции" },
+                    { name: "Сумма", formula: "(u + v)' = u' + v'", description: "Производная суммы" },
+                    { name: "Произведение", formula: "(u·v)' = u'·v + u·v'", description: "Правило произведения" },
+                    { name: "Частное", formula: "(u/v)' = (u'·v - u·v')/v²", description: "Правило частного" },
+                    { name: "Сложная функция", formula: "f(g(x))' = f'(g)·g'", description: "Правило цепочки" },
+                    { name: "Синус", formula: "(sin x)' = cos x", description: "Производная синуса" },
+                    { name: "Косинус", formula: "(cos x)' = -sin x", description: "Производная косинуса" },
+                    { name: "Тангенс", formula: "(tg x)' = 1/cos²x", description: "Производная тангенса" },
+                    { name: "Экспонента", formula: "(eˣ)' = eˣ", description: "Производная экспоненты" },
+                    { name: "Натуральный логарифм", formula: "(ln x)' = 1/x", description: "Производная логарифма" }
+                ]
+            },
+            "Интегралы": {
+                icon: "∫",
+                formulas: [
+                    { name: "Неопределенный интеграл", formula: "∫ xⁿ dx = xⁿ⁺¹/(n+1) + C", description: "Интеграл степенной функции" },
+                    { name: "Интеграл 1/x", formula: "∫ 1/x dx = ln|x| + C", description: "Интеграл обратной функции" },
+                    { name: "Интеграл eˣ", formula: "∫ eˣ dx = eˣ + C", description: "Интеграл экспоненты" },
+                    { name: "Интеграл sin x", formula: "∫ sin x dx = -cos x + C", description: "Интеграл синуса" },
+                    { name: "Интеграл cos x", formula: "∫ cos x dx = sin x + C", description: "Интеграл косинуса" }
+                ]
+            },
+            "Геометрия": {
+                icon: "📐",
+                formulas: [
+                    { name: "Площадь круга", formula: "S = πR²", description: "Площадь круга радиуса R" },
+                    { name: "Длина окружности", formula: "C = 2πR", description: "Длина окружности" },
+                    { name: "Площадь треугольника", formula: "S = (a·h)/2", description: "Площадь через основание и высоту" },
+                    { name: "Теорема Пифагора", formula: "c² = a² + b²", description: "Для прямоугольного треугольника" },
+                    { name: "Объем шара", formula: "V = (4/3)πR³", description: "Объем шара" },
+                    { name: "Площадь сферы", formula: "S = 4πR²", description: "Площадь поверхности сферы" }
+                ]
+            }
+        };
+
+        const physicsData = {
+            "Механика": {
+                icon: "⚙️",
+                formulas: [
+                    { name: "Скорость", formula: "v = s/t", description: "Скорость = путь / время" },
+                    { name: "Ускорение", formula: "a = (v - v₀)/t", description: "Ускорение = изменение скорости / время" },
+                    { name: "Второй закон Ньютона", formula: "F = m·a", description: "Сила = масса × ускорение" },
+                    { name: "Сила тяжести", formula: "F = m·g", description: "g = 9.8 м/с²" },
+                    { name: "Импульс", formula: "p = m·v", description: "Импульс = масса × скорость" },
+                    { name: "Закон сохранения импульса", formula: "m₁v₁ + m₂v₂ = const", description: "В замкнутой системе" },
+                    { name: "Кинетическая энергия", formula: "Eк = mv²/2", description: "Энергия движения" },
+                    { name: "Потенциальная энергия", formula: "Eп = mgh", description: "Энергия положения" },
+                    { name: "Работа", formula: "A = F·s·cosα", description: "Работа силы" },
+                    { name: "Мощность", formula: "N = A/t", description: "Мощность = работа / время" }
+                ]
+            },
+            "Термодинамика": {
+                icon: "🔥",
+                formulas: [
+                    { name: "Количество теплоты", formula: "Q = cmΔt", description: "c - удельная теплоемкость" },
+                    { name: "Плавление", formula: "Q = λm", description: "λ - удельная теплота плавления" },
+                    { name: "Парообразование", formula: "Q = Lm", description: "L - удельная теплота парообразования" },
+                    { name: "Сгорание", formula: "Q = qm", description: "q - удельная теплота сгорания" },
+                    { name: "КПД", formula: "η = (Aполез/Aзатр)·100%", description: "Коэффициент полезного действия" }
+                ]
+            },
+            "Электричество": {
+                icon: "⚡",
+                formulas: [
+                    { name: "Закон Ома", formula: "I = U/R", description: "Сила тока = напряжение / сопротивление" },
+                    { name: "Мощность тока", formula: "P = U·I = I²R = U²/R", description: "Электрическая мощность" },
+                    { name: "Работа тока", formula: "A = U·I·t", description: "Работа электрического тока" },
+                    { name: "Сопротивление", formula: "R = ρ·l/S", description: "ρ - удельное сопротивление" },
+                    { name: "Закон Джоуля-Ленца", formula: "Q = I²Rt", description: "Тепловое действие тока" },
+                    { name: "Последовательное соединение", formula: "R = R₁ + R₂", description: "Общее сопротивление" },
+                    { name: "Параллельное соединение", formula: "1/R = 1/R₁ + 1/R₂", description: "Общее сопротивление" }
+                ]
+            },
+            "Оптика": {
+                icon: "🔆",
+                formulas: [
+                    { name: "Скорость света", formula: "c = 3·10⁸ м/с", description: "Скорость света в вакууме" },
+                    { name: "Показатель преломления", formula: "n = c/v", description: "Отношение скоростей" },
+                    { name: "Закон преломления", formula: "n₁·sinα = n₂·sinβ", description: "Закон Снеллиуса" },
+                    { name: "Линза", formula: "1/F = 1/d + 1/f", description: "Формула тонкой линзы" },
+                    { name: "Оптическая сила", formula: "D = 1/F", description: "D в диоптриях" }
+                ]
+            },
+            "Колебания": {
+                icon: "〰️",
+                formulas: [
+                    { name: "Период колебаний", formula: "T = t/N", description: "Период = время / число колебаний" },
+                    { name: "Частота", formula: "ν = 1/T = N/t", description: "Частота = 1/период" },
+                    { name: "Период пружинного маятника", formula: "T = 2π√(m/k)", description: "k - жесткость пружины" },
+                    { name: "Период математического маятника", formula: "T = 2π√(l/g)", description: "l - длина нити" },
+                    { name: "Длина волны", formula: "λ = v·T = v/ν", description: "Связь скорости, периода и длины волны" }
+                ]
+            }
+        };
+
+        const physicsTerms = {
+            "Механика": [
+                { term: "Инерция", definition: "Свойство тела сохранять скорость при отсутствии внешних воздействий" },
+                { term: "Масса", definition: "Мера инертности тела, измеряется в килограммах (кг)" },
+                { term: "Сила", definition: "Векторная величина, причина изменения скорости, единица - Ньютон (Н)" },
+                { term: "Импульс", definition: "Векторная величина, равная произведению массы на скорость" },
+                { term: "Энергия", definition: "Способность тела совершать работу, измеряется в Джоулях (Дж)" }
+            ],
+            "Термодинамика": [
+                { term: "Температура", definition: "Мера средней кинетической энергии молекул" },
+                { term: "Теплота", definition: "Энергия, передаваемая при теплопередаче" },
+                { term: "Удельная теплоемкость", definition: "Количество теплоты для нагрева 1 кг вещества на 1°C" }
+            ],
+            "Электричество": [
+                { term: "Напряжение", definition: "Работа электрического поля по перемещению заряда, единица - Вольт (В)" },
+                { term: "Сила тока", definition: "Количество заряда, проходящего через сечение за 1 секунду, единица - Ампер (А)" },
+                { term: "Сопротивление", definition: "Свойство проводника препятствовать току, единица - Ом (Ω)" }
+            ]
+        };
+
+        let currentView = 'mathCategories';
+
+        function showView(viewId) {
+            // Скрываем все вьюхи
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            // Показываем нужную
+            document.getElementById(viewId).classList.add('active');
+            currentView = viewId;
+        }
+
+        function displayCategories() {
+            // Математика
+            const mathGrid = document.getElementById('mathCategoryGrid');
+            mathGrid.innerHTML = '';
+            for (const [category, data] of Object.entries(mathData)) {
+                mathGrid.innerHTML += `
+                    <div class="category-card" onclick="showMathFormulas('${category}')">
+                        <div class="category-icon">${data.icon}</div>
+                        <div class="category-title">${category}</div>
+                        <div class="category-count">${data.formulas.length} формул</div>
+                    </div>
+                `;
+            }
+
+            // Физика
+            const physicsGrid = document.getElementById('physicsCategoryGrid');
+            physicsGrid.innerHTML = '';
+            for (const [category, data] of Object.entries(physicsData)) {
+                physicsGrid.innerHTML += `
+                    <div class="category-card" onclick="showPhysicsFormulas('${category}')">
+                        <div class="category-icon">${data.icon}</div>
+                        <div class="category-title">${category}</div>
+                        <div class="category-count">${data.formulas.length} формул</div>
+                    </div>
+                `;
+            }
+        }
+
+        function showMathFormulas(category) {
+            const data = mathData[category];
+            const container = document.getElementById('mathFormulasView');
+            
+            let html = `<button class="back-button" onclick="backToMathCategories()">← Назад к разделам</button>`;
+            html += `<div class="section-title">📖 ${category}</div>`;
+            
+            data.formulas.forEach(f => {
+                html += `
+                    <div class="formula-card">
+                        <div class="formula-name">${f.name}</div>
+                        <div class="formula">${f.formula}</div>
+                        <div class="formula-description">${f.description}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            showView('mathFormulasView');
+        }
+
+        function showPhysicsFormulas(category) {
+            const data = physicsData[category];
+            const container = document.getElementById('physicsFormulasView');
+            
+            let html = `<button class="back-button" onclick="backToPhysicsCategories()">← Назад к разделам</button>`;
+            html += `<div class="section-title">📖 ${category}</div>`;
+            
+            data.formulas.forEach(f => {
+                html += `
+                    <div class="formula-card">
+                        <div class="formula-name">${f.name}</div>
+                        <div class="formula">${f.formula}</div>
+                        <div class="formula-description">${f.description}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            showView('physicsFormulasView');
+        }
+
+        function backToMathCategories() {
+            showView('mathCategoriesView');
+        }
+
+        function backToPhysicsCategories() {
+            showView('physicsCategoriesView');
+        }
+
+        function showTerms() {
+            const container = document.getElementById('termsView');
+            let html = `<button class="back-button" onclick="backFromTerms()">← Назад</button>`;
+            html += `<div class="section-title">📖 Физические термины</div>`;
+            
+            for (const [section, terms] of Object.entries(physicsTerms)) {
+                html += `<div class="section-title" style="font-size:1.1em; margin-top:20px;">📌 ${section}</div>`;
+                terms.forEach(t => {
+                    html += `
+                        <div class="term-card">
+                            <div class="term-name">${t.term}</div>
+                            <div class="term-definition">${t.definition}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            container.innerHTML = html;
+            showView('termsView');
+        }
+
+        function backFromTerms() {
+            // Возвращаемся к последней активной категории
+            if (currentView === 'termsView') {
+                switchTab('math');
+            }
+        }
+
+        function searchItems() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (!query) {
+                switchTab('math');
+                return;
+            }
+            
+            let results = [];
+            
+            for (const [cat, data] of Object.entries(mathData)) {
+                data.formulas.forEach(f => {
+                    if (f.name.toLowerCase().includes(query) || f.formula.toLowerCase().includes(query)) {
+                        results.push({ type: 'math', category: cat, formula: f });
+                    }
+                });
+            }
+            
+            for (const [cat, data] of Object.entries(physicsData)) {
+                data.formulas.forEach(f => {
+                    if (f.name.toLowerCase().includes(query) || f.formula.toLowerCase().includes(query)) {
+                        results.push({ type: 'physics', category: cat, formula: f });
+                    }
+                });
+            }
+            
+            for (const [section, terms] of Object.entries(physicsTerms)) {
+                terms.forEach(t => {
+                    if (t.term.toLowerCase().includes(query) || t.definition.toLowerCase().includes(query)) {
+                        results.push({ type: 'term', section: section, term: t });
+                    }
+                });
+            }
+            
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            const container = document.getElementById('mathFormulasView');
+            
+            if (results.length === 0) {
+                container.innerHTML = `<div class="formula-card">Ничего не найдено 😔</div>`;
+            } else {
+                let html = `<button class="back-button" onclick="switchTab('math')">← Назад</button>`;
+                html += `<div class="section-title">🔍 Результаты поиска (${results.length})</div>`;
+                results.forEach(r => {
+                    if (r.type !== 'term') {
+                        html += `
+                            <div class="formula-card">
+                                <div class="formula-name">${r.formula.name} [${r.type === 'math' ? 'Математика' : 'Физика'}: ${r.category}]</div>
+                                <div class="formula">${r.formula.formula}</div>
+                                <div class="formula-description">${r.formula.description}</div>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="term-card">
+                                <div class="term-name">${r.term.term} [Термин: ${r.section}]</div>
+                                <div class="term-definition">${r.term.definition}</div>
+                            </div>
+                        `;
+                    }
+                });
+                container.innerHTML = html;
+            }
+            
+            showView('mathFormulasView');
+        }
+
+        function switchTab(tab) {
+            // Обновляем активную кнопку
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+            
+            // Очищаем поиск
+            document.getElementById('searchInput').value = '';
+            
+            if (tab === 'math') {
+                showView('mathCategoriesView');
+            } else if (tab === 'physics') {
+                showView('physicsCategoriesView');
+            } else if (tab === 'terms') {
+                showTerms();
+            }
+        }
+
+        // Назначаем обработчики на кнопки
+        document.querySelectorAll('.tab').forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+        });
+
+        // Инициализация
+        displayCategories();
+        
+        if (tg.colorScheme === 'dark') {
+            document.body.style.background = 'linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%)';
+        }
+    </script>
+</body>
+</html>
